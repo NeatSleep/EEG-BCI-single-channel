@@ -38,8 +38,7 @@ during eyes-closed relaxation state.
 
 Our analysis reveals a clear stratification: P300 (1–12 Hz, single posterior
 electrode, zero calibration) and SSVEP (single occipital electrode,
-subject-independent) are deployable on minimal hardware; motor imagery
-requires at minimum bilateral motor coverage; imagined speech decoding is
+subject-independent) are deployable on minimal hardware; motor imagery requires bilateral motor cortex coverage (C3/C4 minimum) and is not capturable on single-channel hardware; imagined speech decoding is
 fundamentally constrained at EEG spatial resolution and bandwidth, regardless
 of classification algorithm. We argue that hardware feasibility should be
 treated as a first-class evaluation criterion in BCI benchmarking, and propose
