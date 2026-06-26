@@ -1,6 +1,6 @@
 # EEG-BCI-single-channel
 # Single-Channel EEG Acquisition System
-### AD620AN · TL074 · ESP32 · Brain-Computer Interface Research
+### Brain-Computer Interface Research · Instrumentation amplifier(AD620AN) · Operational amplifier(TL074) · ADC(DSO/ESP32) · Brain-Computer Interface Research
 
 > **B.Tech Final Year Project — Electrical & Electronics Engineering**
 > Academy of Technology, Hooghly, West Bengal (MAKAUT), 2024–25
@@ -43,15 +43,15 @@ changes what you write — and what you are honest about.
 
 ```mermaid
 flowchart TD
-    A(["🧠 Scalp — AgCl Electrodes\nA1 · A2 active earlobes · Fpz reference\nConductive gel · 10-20 International System"])
-    B["🛡️ Protection Stage\nSeries resistors + low-leakage diodes\nLimits input current · Prevents ESD damage"]
-    C["⚡ AD620AN — Instrumentation Amplifier\nGain: G = 49.4kΩ/Rg + 1\nCMRR > 100 dB · Rg = 500kΩ\nDifferential input → single-ended output"]
-    D["🔧 TL074 — Quad Op-Amp\nPost-amplifier + filter driver\nGain: Gb = 1 + Rf/R1\nAdditional voltage gain stage"]
-    E["〰️ 2nd-Order Passive Bandpass Filter\n0.5 Hz – 50 Hz\nFc = 1 / 2π√R1·R2·C1·C2\nPasses delta · theta · alpha · beta · gamma\nRejects DC drift + HF EMG noise"]
-    F["🚫 Twin-T Notch Filter — 50 Hz\nPowerline interference rejection\nIndian grid frequency: 50 Hz\nPassive RC Twin-T topology"]
-    G["⚖️ Bias Network — DC Offset Correction\n2 × 10kΩ voltage divider\n3.3V ESP32 rail → ~1.65V midpoint\nShifts bipolar TL074 output\ninto ESP32 ADC range 0–3.3V"]
-    H["💻 ESP32 — 12-bit SAR ADC\nGPIO 34 · 0–3.3V · 4096 steps\n~100Hz sampling · 115200 baud\nUSB serial output to PC"]
-    I[["📊 Python Signal Processing Pipeline\npyserial · NumPy FFT · pyqtgraph\nReal-time PSD · Alpha band visualisation"]]
+    A([" Scalp — AgCl Electrodes\nA1 · A2 active earlobes · Fpz reference\nConductive gel · 10-20 International System"])
+    B[" Protection Stage\nSeries resistors + low-leakage diodes\nLimits input current "]
+    C[" AD620AN — Instrumentation Amplifier\nGain: G = 49.4kΩ/Rg + 1\nCMRR > 100 dB · Rg = 500kΩ\nDifferential input → single-ended output"]
+    D[" TL074 — Quad Op-Amp\nPost-amplifier + filter driver\nGain: Gb = 1 + Rf/R1\nAdditional voltage gain stage"]
+    E[" 2nd-Order Passive Bandpass Filter\n0.5 Hz – 50 Hz\nFc = 1 / 2π√R1·R2·C1·C2\nPasses delta · theta · alpha · beta · gamma\nRejects DC drift + HF EMG noise"]
+    F["  Notch Filter "]
+    G[" Bias Network — DC Offset Correction\n2 × 10kΩ voltage divider\n3.3V ESP32 rail → ~1.65V midpoint\nShifts bipolar TL074 output\ninto ESP32 ADC range 0–3.3V"]
+    H[" ESP32 — 12-bit SAR ADC\nGPIO 34 · 0–3.3V · 4096 steps\n~100Hz sampling · 115200 baud\nUSB serial output to PC"]
+    I[[" Python Signal Processing Pipeline\npyserial · NumPy FFT · pyqtgraph\nReal-time PSD · Alpha band visualisation"]]
 
     A --> B --> C --> D --> E --> F --> G --> H --> I
 
@@ -82,7 +82,7 @@ flowchart TD
 | Passband | 0.5 Hz – 50 Hz |
 | Filter type | 2nd-order passive RC bandpass |
 | Filter cutoff equation | Fc = 1 / (2π × √(R1 × R2 × C1 × C2)) |
-| Notch | 50 Hz Twin-T passive filter |
+| Notch filter |
 | ADC | ESP32 GPIO 34, 12-bit (0–4095), 0–3.3 V range |
 | Sampling rate | ~100 Hz (10 ms loop delay) |
 | Serial baud rate | 115200 |
@@ -386,18 +386,49 @@ in an academic research context.
 
 ## References
 
-Wolpaw, J.R. et al. (2002). Brain-computer interfaces for communication and
-control. *Clinical Neurophysiology*, 113(6), 767–791.
+Primary circuit reference:
+Zhang, L., Guo, X., Wu, X., & Zhou, B. (2013). Low-cost circuit
+design of EEG signal acquisition for the brain-computer interface
+system. In 2013 6th International Conference on Biomedical
+Engineering and Informatics (BMEI) (pp. 245–250). IEEE.
+doi:10.1109/BMEI.2013.6747032
+
+Note: This repository adapts the single-channel EEG acquisition
+methodology from Lei Zhang et al. (2013). Key adaptations include:
+AD620AN in place of INA128P, TL074 in place of OPA4227, simplified
+6-stage architecture (omitting CMR and optical isolation stages),
+passive bandpass filter, and ESP32/Python digital backend.
+
+
+BCI paradigms and clinical applications:
+Cruz, M.V., Jamal, S., & Sethuraman, S.C. (2025). A comprehensive
+survey of brain–computer interface technology in healthcare:
+Research perspectives. Journal of Medical Signals & Sensors, 15, 16.
+doi:10.4103/jmss.jmss_49_24
+
+Wolpaw, J.R. et al. (2002). Brain-computer interfaces for
+communication and control. Clinical Neurophysiology, 113(6), 767–791.
 
 Farwell, L.A. & Donchin, E. (1988). Talking off the top of your head:
 toward a mental prosthesis utilizing event-related brain potentials.
-*Electroencephalography and Clinical Neurophysiology*, 70(6), 510–523.
+Electroencephalography and Clinical Neurophysiology, 70(6), 510–523.
 
-Lawhern, V.J. et al. (2018). EEGNet: a compact convolutional neural network
-for EEG-based brain-computer interfaces. *Journal of Neural Engineering*,
-15(5), 056013.
+Lawhern, V.J. et al. (2018). EEGNet: a compact convolutional neural
+network for EEG-based brain-computer interfaces. Journal of Neural
+Engineering, 15(5), 056013.
 
-Analog Devices. AD620 Low Cost, Low Power Instrumentation Amplifier.
+
+Open-source low-cost EEG hardware:
+OpenEEG Project. (2003). ModularEEG and MonolithEEG open-source
+EEG hardware. http://openeeg.sourceforge.net
+
+
+Component datasheets:
+Analog Devices. (2011). AD620 Low Cost, Low Power Instrumentation
+Amplifier. Data Sheet Rev. G.
+
+Texas Instruments. (2017). TL07xx Low-Noise JFET-Input Operational
+Amplifiers. Data Sheet SLOS080P.
 Data Sheet. Rev. G.
 
 Texas Instruments. TL07xx Low-Noise JFET-Input Operational Amplifiers.
